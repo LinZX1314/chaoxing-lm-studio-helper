@@ -21,6 +21,7 @@
 // @resource     element-plus  https://cdn.staticfile.org/element-plus/2.3.12/index.css
 // @resource     ttf           https://www.forestpolice.org/ttf/2.0/table.json
 // @connect      127.0.0.1
+// @connect      open.bigmodel.cn
 // @connect      localhost
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
@@ -1496,7 +1497,12 @@ ${questionData.options && questionData.options.length > 0 ? "\n【选项】\n" +
       if ("string" == typeof answer[i].answer) {
         if (-1 !== answer[i].answer.indexOf("付费题库") || -1 !== answer[i].answer.indexOf("暂无答案") || "略" == answer[i].answer)
           continue;
-        answer[i].answer = [answer[i].answer];
+        // 对于多选题(type="1")，需要将逗号分隔的字符串分割成数组
+        if (questionData.type === "1") {
+          answer[i].answer = answer[i].answer.split(",").map(a => a.trim()).filter(a => a);
+        } else {
+          answer[i].answer = [answer[i].answer];
+        }
       }
       let tmp = setAnswer(answer[i].answer, questionData, html, iframeWindow);
       if (tmp)
@@ -1540,8 +1546,11 @@ ${questionData.options && questionData.options.length > 0 ? "\n【选项】\n" +
         });
         for (let i2 = 0; i2 < answer2.length; i2++)
           answer2[i2] = removeHtml(answer2[i2]);
-      } else
-        "string" == typeof answer2 && (answer2 = cl(answer2));
+      } else if ("string" == typeof answer2) {
+        answer2 = cl(answer2);
+        // 将逗号分隔的字符串拆分成数组（用于多选题）
+        answer2 = answer2.split(",").map(a => a.trim()).filter(a => a);
+      }
       return answer2;
     })(answer);
     for (var matchArr = [], i = 0; i < answer.length; i++)

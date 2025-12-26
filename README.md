@@ -140,16 +140,10 @@
    AI API地址: https://open.bigmodel.cn/api/paas/v4/chat/completions
    API Key: 您的API Key
    模型名称: glm-4-flash 或其他可用模型
+   编辑脚本在头部添加`// @connect      open.bigmodel.cn`
+   否则脚本无法访问对应API
    ```
-
-### SiliconFlow 配置
-
-```
-AI API地址: https://api.siliconflow.cn/v1/chat/completions
-API Key: 您的API Key
-模型名称: Qwen/Qwen2.5-7B-Instruct
-```
-
+# ！！！编辑脚本在头部添加`// @connect      open.bigmodel.cn`
 ---
 
 ## 📋 使用说明
